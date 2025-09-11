@@ -19,6 +19,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# quick health and root endpoints (add near top of main.py)
+@app.get("/")
+def root():
+    return {"status": "voyagemate-backend", "info": "FastAPI is running. Use /query to POST requests."}
+
+@app.get("/health")
+def health():
+    return {"status": "ok"}
+
+
 class QueryRequest(BaseModel):
     question: str
 
@@ -250,3 +260,5 @@ async def query_travel_agent(query: QueryRequest):
         return JSONResponse(status_code=200, content=structured)
     except Exception as e:
         return JSONResponse(status_code=500, content={"error": str(e)})
+
+
